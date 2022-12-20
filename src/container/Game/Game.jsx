@@ -13,8 +13,7 @@ const Game = () => {
     console.log(`Board: `, board);
 
     const handleClick = (indexI, indexJ) => {
-        if (board[indexI][indexJ]) return;
-        if (isWinner) return;
+        if (isWinner || board[indexI][indexJ]) return;
 
         const _board = JSON.parse(JSON.stringify(board));
         _board[indexI][indexJ] = activeUser;
@@ -23,20 +22,20 @@ const Game = () => {
         const winner = calcWinner(_board, indexI, indexJ);
         if (winner) {
             setIsWinner(winner);
-        }
-        
-        if (!winner) {
+        } else {
         setActiveUser(activeUser === 'X' ? 'O' : 'X');
         }
         
         setBoard(_board);
         console.log(_board[indexI][indexJ]);
     };
+
     const handleResetGame = () => {
         setBoard(Array(size).fill(Array(size).fill(null)));
         setActiveUser('X')
         setIsWinner(false);
     };
+    
     const hasWinner = () => {
         if (isWinner()) {
             return activeUser === 'X' ? setXPoint(prev => prev + 1) : setOPoint(prev => prev + 1);
